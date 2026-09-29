@@ -27,3 +27,4 @@ ENV/
 Thumbs.db
 .idea/
 .vscode/
+cloudflared.exe
