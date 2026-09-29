@@ -140,7 +140,7 @@ class ThreatDetector:
     SUSPICIOUS_PATTERNS = [
         re.compile(r"(--|;|union|select|insert|drop)", re.IGNORECASE),
         re.compile(r"(<script|javascript:|onerror=)", re.IGNORECASE),
-        re.compile(r"(\.\./\.\./|etc/passwd)", re.IGNORECASE)
+        re.compile(r"(\\.\\./\\.\\./|etc/passwd)", re.IGNORECASE)
     ]
 
     def analyze_payload(self, raw_input: str) -> Dict[str, Any]:

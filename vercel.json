@@ -1,10 +1,9 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
+  "version": 2,
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://focuses-bowling-associate-allen.trycloudflare.com/api/$1"
+      "destination": "/api/index.py"
     },
     {
       "source": "/fixtures.json",
@@ -19,7 +18,7 @@
       "destination": "/public/index.html"
     },
     {
-      "source": "/((?!api|static|fixtures).*)$",
+      "source": "/((?!api|static|fixtures).*)",
       "destination": "/public/index.html"
     }
   ]
