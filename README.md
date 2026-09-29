@@ -10,8 +10,16 @@
 [![Docker: Ready](https://img.shields.io/badge/Docker-compose%20ready-2496ED.svg)](docker-compose.yml)
 [![Open Source: OSI Approved](https://img.shields.io/badge/OSI-Approved%20License-green.svg)](https://opensource.org/licenses/MIT)
 
+
 ---
 
+## 🌐 Live Demos & Public Links
+
+- **Live Netlify Web App**: [https://idyllic-sprinkles-b27475.netlify.app](https://idyllic-sprinkles-b27475.netlify.app) *(Password: `My-Drop-Site`)*
+- **Live Cloudflare Public Tunnel**: [https://budget-dean-tickets-barnes.trycloudflare.com](https://budget-dean-tickets-barnes.trycloudflare.com)
+- **Official GitHub Repository**: [https://github.com/Dina-hash181/HackJudge-AI](https://github.com/Dina-hash181/HackJudge-AI)
+
+---
 ## 🏆 Dogfood 2026 Specification Compliance
 
 | Requirement | Implementation & Proof | Status |
