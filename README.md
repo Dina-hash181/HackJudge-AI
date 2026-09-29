@@ -15,8 +15,9 @@
 
 ## 🌐 Live Demos & Public Links
 
-- **Live Netlify Web App**: [https://idyllic-sprinkles-b27475.netlify.app](https://idyllic-sprinkles-b27475.netlify.app) *(Password: `My-Drop-Site`)*
-- **Live Cloudflare Public Tunnel**: [https://budget-dean-tickets-barnes.trycloudflare.com](https://budget-dean-tickets-barnes.trycloudflare.com)
+- **Live Netlify Web App**: [https://gentle-crepe-7098a0.netlify.app](https://gentle-crepe-7098a0.netlify.app) *(Password: `My-Drop-Site`)*
+- **Live Cloudflare Public Tunnel (HTTP/2 Stable)**: [https://focuses-bowling-associate-allen.trycloudflare.com](https://focuses-bowling-associate-allen.trycloudflare.com)
+- **Vercel Deployment Ready**: Pre-configured with [`vercel.json`](vercel.json) for 1-click import from GitHub.
 - **Official GitHub Repository**: [https://github.com/Dina-hash181/HackJudge-AI](https://github.com/Dina-hash181/HackJudge-AI)
 
 ---
