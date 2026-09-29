@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HackJudge AI · Autonomous Hackathon Management & Judging Platform</title>
+  <meta name="description" content="Complete self-hosted hackathon platform that manages registration, teams, submissions, judging, normalized scoring, and certificates.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="brand-section">
+      <div class="brand-title">HackJudge<span>AI</span></div>
+      <div class="event-badge">PLATFORM THAT JUDGES YOU</div>
+    </div>
+
+    <!-- DEMO ROLE SWITCHER -->
+    <div class="demo-switcher">
+      <label>Demo Role:</label>
+      <button class="demo-btn active" data-target="organizer" title="Full Admin & Evaluation Authority">Organizer ⚙️</button>
+      <button class="demo-btn" data-target="judge_a" title="Tomas Varga (Judge A)">Judge A ⚖️</button>
+      <button class="demo-btn" data-target="judge_b" title="Wei Lindqvist (Judge B)">Judge B ⚖️</button>
+      <button class="demo-btn" data-target="participant" title="Ada Okonkwo (Team Nightshift)">Participant 🚀</button>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <!-- SYSTEM LIVE STATUS PILL -->
+      <div class="system-status-pill">
+        <span class="pulse-emerald-dot"></span>
+        <span>VERIFIED ONLINE · ZERO-CLOUD</span>
+      </div>
+
+      <!-- USER STATUS -->
+      <div class="user-profile">
+        <span id="userBadge" class="user-badge badge-organizer">ORGANIZER</span>
+        <span id="userName" style="font-weight: 600;">Hackathon Organizer</span>
+        <div id="authActions">
+          <button class="btn-outline" id="btnLogout">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebarNav">
+      <div class="nav-group-title">Core Operations</div>
+      <div class="nav-item active" data-tab="overview">
+        <span class="icon">📊</span> Overview & Status
+      </div>
+      <div class="nav-item" data-tab="gallery">
+        <span class="icon">🎨</span> Project Gallery
+      </div>
+
+      <div class="nav-group-title">Lifecycle Roles</div>
+      <div class="nav-item" data-tab="participant">
+        <span class="icon">🚀</span> Participant Portal
+      </div>
+      <div class="nav-item" data-tab="judge">
+        <span class="icon">⚖️</span> Judge Dashboard
+      </div>
+      <div class="nav-item" data-tab="ai">
+        <span class="icon">🤖</span> HackJudge AI Dashboard
+      </div>
+      <div class="nav-item" data-tab="admin">
+        <span class="icon">🛡️</span> Admin Console
+      </div>
+
+      <div class="nav-group-title">Results & Outputs</div>
+      <div class="nav-item" data-tab="results">
+        <span class="icon">🏆</span> Normalized Leaderboard
+      </div>
+      <div class="nav-item" data-tab="certificates">
+        <span class="icon">📜</span> Certificates
+      </div>
+      <div class="nav-item" data-tab="archive">
+        <span class="icon">📦</span> Archive & Audit
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWPORT -->
+    <main class="main-viewport">
+
+      <!-- 1. OVERVIEW VIEW -->
+      <section class="view-section active" id="view-overview">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Sample Hack 2026 Overview</h1>
+            <p class="view-subtitle">Autonomous lifecycle coordination, weighted rubric scoring, and cross-judge normalization.</p>
+          </div>
+          <button class="btn-primary" onclick="document.querySelector('[data-tab=gallery]').click()">Browse Gallery &rarr;</button>
+        </div>
+
+        <!-- HERO BANNER -->
+        <div class="hero-banner">
+          <div class="hero-top-row">
+            <div class="hero-pill">
+              <span class="demo-status-pulse"></span>
+              <span>HACKJUDGE AI LIVE PLATFORM · ALL 41 PROJECTS VERIFIED</span>
+            </div>
+            <span class="badge status-badge approved">T1 &amp; T2 VERIFIED COMPLIANT</span>
+          </div>
+          <h2 class="hero-headline">“Build the platform that will judge you.”</h2>
+          <p class="hero-subtext">
+            End-to-end self-contained event execution engine with zero external cloud dependencies. Features verified public gallery with in-app multi-file repository explorer, live interactive sandbox, role-isolated multi-criterion evaluation, automated HackJudge AI judging assistant, cross-judge Z-Score score normalization, and official signed certificates.
+          </p>
+          <div class="hero-features-ribbon">
+            <span class="ribbon-item">⚡ 100% Local Self-Hosted</span>
+            <span class="ribbon-item">🛡️ Role-Isolated Scoring</span>
+            <span class="ribbon-item">🤖 HackJudge AI Assistant</span>
+            <span class="ribbon-item">📐 Z-Score Calibration</span>
+            <span class="ribbon-item">📜 Cryptographic Certificates</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="document.querySelector('[data-tab=gallery]').click()">🎨 Explore Project Gallery</button>
+            <button class="btn-purple" onclick="document.querySelector('[data-tab=ai]').click()">🤖 Open HackJudge AI Console</button>
+            <button class="btn-action" onclick="document.querySelector('[data-tab=results]').click()">🏆 Leaderboard &amp; Normalization</button>
+            <button class="btn-action" onclick="document.querySelector('[data-tab=certificates]').click()">📜 Certificates</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Submissions</span>
+              <span class="stat-icon-pill">📁</span>
+            </div>
+            <div class="stat-value highlight-teal" id="ovTotalProjects">41</div>
+            <div class="stat-meta">Verified Fixtures Loaded</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Registered Teams</span>
+              <span class="stat-icon-pill">👥</span>
+            </div>
+            <div class="stat-value" id="ovTotalTeams">40</div>
+            <div class="stat-meta">Invite-Code Protected</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Evaluating Judges</span>
+              <span class="stat-icon-pill">⚖️</span>
+            </div>
+            <div class="stat-value" id="ovTotalJudges">30</div>
+            <div class="stat-meta">Peer-Isolated Matrix</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Review Completion</span>
+              <span class="stat-icon-pill">✅</span>
+            </div>
+            <div class="stat-value highlight-pink" id="ovCompletionPct">100%</div>
+            <div class="stat-meta">126 Stored Evaluations</div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="card-panel-header">
+            <div class="card-panel-title">End-to-End Lifecycle Architecture</div>
+            <span class="badge track-badge">SELF-CONTAINED</span>
+          </div>
+          <p style="color:var(--text-dim); margin-bottom:16px;">
+            This platform manages the complete hackathon pipeline in one unified system:
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; font-size:12px;">
+            <div style="background:var(--bg-panel); border:1px solid var(--border-color); padding:14px;">
+              <strong style="color:var(--teal);">1. Registration & Teams</strong>
+              <p style="color:var(--text-muted); margin-top:4px;">Team formation via cryptographically unique invite codes with role enforcement.</p>
+            </div>
+            <div style="background:var(--bg-panel); border:1px solid var(--border-color); padding:14px;">
+              <strong style="color:var(--teal);">2. Submissions & Deadline</strong>
+              <p style="color:var(--text-muted); margin-top:4px;">Draft and edit prior to deadline. Strict backend enforcement on closed events.</p>
+            </div>
+            <div style="background:var(--bg-panel); border:1px solid var(--border-color); padding:14px;">
+              <strong style="color:var(--teal);">3. Role-Isolated Judging</strong>
+              <p style="color:var(--text-muted); margin-top:4px;">Judges evaluate assigned projects on weighted rubrics. Peer scores are strictly blocked at the API level.</p>
+            </div>
+            <div style="background:var(--bg-panel); border:1px solid var(--border-color); padding:14px;">
+              <strong style="color:var(--teal);">4. Cross-Judge Normalization</strong>
+              <p style="color:var(--text-muted); margin-top:4px;">Z-Score standardization accounts for strict vs lenient reviewers to produce equitable rankings.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PROJECT GALLERY VIEW -->
+      <section class="view-section" id="view-gallery">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Project Gallery</h1>
+            <p class="view-subtitle">Live repository of verified submissions across all challenge tracks.</p>
+          </div>
+        </div>
+
+        <div class="gallery-controls">
+          <input type="text" id="gallerySearch" class="search-input" placeholder="Search projects by title, summary, tech, or team...">
+          <select id="galleryTrackFilter" class="filter-select">
+            <option value="all">All Tracks</option>
+          </select>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <!-- Server-rendered cards injected here for SSR and curl compatibility -->
+          <!-- SSR_PROJECT_CARDS -->
+        </div>
+      </section>
+
+      <!-- 3. PARTICIPANT VIEW -->
+      <section class="view-section" id="view-participant">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Participant Dashboard</h1>
+            <p class="view-subtitle">Manage your team, invite members, and submit your project before the deadline.</p>
+          </div>
+        </div>
+
+        <div id="participantContent">
+          <!-- Loaded dynamically via app.js -->
+        </div>
+      </section>
+
+      <!-- 4. JUDGE VIEW -->
+      <section class="view-section" id="view-judge">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Judge Evaluation Console</h1>
+            <p class="view-subtitle">Role-isolated scoring engine with weighted multi-criterion rubrics.</p>
+          </div>
+        </div>
+
+        <div id="judgeContent">
+          <!-- Loaded dynamically via app.js -->
+        </div>
+      </section>
+
+      <!-- 4B. AI JUDGE VIEW -->
+      <section class="view-section" id="view-ai">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">HackJudge AI Evaluation Dashboard</h1>
+            <p class="view-subtitle">Automated multi-criterion assessment, detailed reasoning, and human-AI calibration comparison.</p>
+          </div>
+          <button class="btn-primary" id="btnBatchAiEval">⚡ Run HackJudge AI Evaluation on All Projects</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">AI Evaluated</div>
+            <div class="stat-value highlight-teal" id="aiEvaluatedCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Human Evaluated</div>
+            <div class="stat-value" id="humanEvaluatedCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg AI Score</div>
+            <div class="stat-value highlight-teal" id="avgAiScore">0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Human Score</div>
+            <div class="stat-value" id="avgHumanScore">0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Divergent Reviews (&gt;1.0)</div>
+            <div class="stat-value highlight-pink" id="divergentCount">0</div>
+          </div>
+        </div>
+
+        <div class="gallery-controls">
+          <input type="text" id="aiSearch" class="search-input" placeholder="Search evaluated projects...">
+          <select id="aiTrackFilter" class="filter-select">
+            <option value="all">All Tracks</option>
+          </select>
+          <select id="aiDiffFilter" class="filter-select">
+            <option value="all">All Score Differences</option>
+            <option value="divergent">⚠️ Divergent Scores Only (|&Delta;| &ge; 1.0)</option>
+            <option value="ai_higher">AI Higher than Human</option>
+            <option value="human_higher">Human Higher than AI</option>
+          </select>
+        </div>
+
+        <div class="card-panel">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Project Title</th>
+                <th>Team</th>
+                <th>Track</th>
+                <th>AI Score</th>
+                <th>Human Score</th>
+                <th>Score &Delta;</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="aiEvaluationsTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 5. ADMIN VIEW -->
+      <section class="view-section" id="view-admin">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Organizer Control Center</h1>
+            <p class="view-subtitle">Manage event settings, eligibility review, judge matrix, and calibration metrics.</p>
+          </div>
+        </div>
+
+        <div id="adminContent">
+          <!-- Loaded dynamically via app.js -->
+        </div>
+      </section>
+
+      <!-- 6. RESULTS VIEW -->
+      <section class="view-section" id="view-results">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Calculated Results & Leaderboard</h1>
+            <p class="view-subtitle">Standings computed from real judge scoring data with cross-judge normalization.</p>
+          </div>
+          <a href="/api/export.csv" target="_blank" class="btn-primary" style="line-height:22px;">Export CSV Report</a>
+        </div>
+
+        <div class="card-panel">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Project Title</th>
+                <th>Team</th>
+                <th>Track</th>
+                <th>Human Raw</th>
+                <th>Human Norm</th>
+                <th>AI Score</th>
+                <th>Final Score</th>
+                <th>Reviews</th>
+                <th>Eligibility</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7. CERTIFICATES VIEW -->
+      <section class="view-section" id="view-certificates">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Verifiable Certificates Hub</h1>
+            <p class="view-subtitle">Generate, inspect, and export tamper-evident certificates for participants, judges, and winners.</p>
+          </div>
+        </div>
+
+        <div id="certsContainer">
+          <!-- Loaded dynamically -->
+        </div>
+      </section>
+
+      <!-- 8. ARCHIVE VIEW -->
+      <section class="view-section" id="view-archive">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Historical Hackathon Archive</h1>
+            <p class="view-subtitle">Immutable records of past hackathons, completed judging logs, and final standings.</p>
+          </div>
+        </div>
+
+        <div id="archiveContent">
+          <!-- Loaded dynamically -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODALS -->
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-card" style="max-width:480px;">
+      <button class="modal-close">&times;</button>
+      <div style="display:flex; gap:10px; border-bottom:1px solid var(--border-color); margin-bottom:18px; padding-bottom:8px;">
+        <button class="btn-action active" id="tabLogin" type="button" style="font-weight:700; padding:8px 18px; border-radius:6px; cursor:pointer;">Sign In</button>
+        <button class="btn-action" id="tabRegister" type="button" style="font-weight:700; padding:8px 18px; border-radius:6px; cursor:pointer; background:transparent; color:var(--text-muted); border:1px solid var(--border-color);">Create Account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Username or Email</label>
+          <input type="text" id="loginIdent" class="form-control" placeholder="organizer, judge_a, or ada@example.org" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="loginPass" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; margin-top:6px; font-weight:700;">Sign In</button>
+
+        <!-- Quick 1-Click Demo Accounts -->
+        <div style="margin-top:16px; padding:12px; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px;">
+          <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Demo Test Logins (Click to Auto-Fill)</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button type="button" class="btn-action" onclick="quickFillLogin('organizer', 'adminpassword')" style="font-size:11px; padding:4px 8px;">👑 Organizer</button>
+            <button type="button" class="btn-action" onclick="quickFillLogin('judge_a', 'judgepassword')" style="font-size:11px; padding:4px 8px;">⚖️ Judge A</button>
+            <button type="button" class="btn-action" onclick="quickFillLogin('judge_b', 'judgepassword')" style="font-size:11px; padding:4px 8px;">⚖️ Judge B</button>
+            <button type="button" class="btn-action" onclick="quickFillLogin('participant', 'participantpassword')" style="font-size:11px; padding:4px 8px;">🚀 Participant</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Sign Up / Register Form -->
+      <form id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="regFullName" class="form-control" placeholder="e.g. Alex Rivera" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="regUsername" class="form-control" placeholder="e.g. alexrivera" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="regEmail" class="form-control" placeholder="alex@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="regPass" class="form-control" placeholder="Create a secure password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Role</label>
+          <select id="regRole" class="form-control">
+            <option value="participant">Participant (Submit projects & join teams)</option>
+            <option value="judge">Judge (Evaluate assigned projects)</option>
+          </select>
+        </div>
+        <div class="form-group" id="regTeamGroup">
+          <label class="form-label">Team Name (Optional)</label>
+          <input type="text" id="regTeamName" class="form-control" placeholder="e.g. Team Hyperion">
+          <span style="font-size:11px; color:var(--text-muted);">Leave empty if joining a team via invite code.</span>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; margin-top:6px; font-weight:700;">Create Account & Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Project Detail Modal -->
+  <div class="modal-overlay" id="projectDetailModal">
+    <div class="modal-card">
+      <button class="modal-close">&times;</button>
+      <div id="projectDetailBody">
+        <!-- Injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Evaluate Project Modal -->
+  <div class="modal-overlay" id="evaluateModal">
+    <div class="modal-card">
+      <button class="modal-close">&times;</button>
+      <div id="evaluateBody">
+        <!-- Injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate View Modal -->
+  <div class="modal-overlay" id="certModal">
+    <div class="modal-card">
+      <button class="modal-close">&times;</button>
+      <div id="certModalBody">
+        <!-- Injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Certificate Modal -->
+  <div class="modal-overlay" id="genCertModal">
+    <div class="modal-card">
+      <button class="modal-close">&times;</button>
+      <h3 style="margin-bottom:14px;">Generate Official Certificate</h3>
+      <form id="genCertForm">
+        <div class="form-group">
+          <label class="form-label">Recipient Name</label>
+          <input type="text" id="certRecipient" class="form-control" placeholder="e.g. Ada Okonkwo" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Certificate Type</label>
+          <select id="certType" class="form-control">
+            <option value="participant">Participant Certificate of Completion</option>
+            <option value="judge">Judge Certificate of Appreciation</option>
+            <option value="winner">Winner / Achievement Award</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Award Title</label>
+          <input type="text" id="certAwardTitle" class="form-control" value="Certificate of Achievement" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Project Title (Optional)</label>
+          <input type="text" id="certProjectTitle" class="form-control" placeholder="e.g. Glass Signal">
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; margin-top:10px;">Issue & Sign Certificate</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- AI Breakdown Modal -->
+  <div class="modal-overlay" id="aiBreakdownModal">
+    <div class="modal-card" style="max-width: 780px;">
+      <button class="modal-close">&times;</button>
+      <div id="aiBreakdownBody">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Repository Viewer Modal -->
+  <div class="modal-overlay" id="repoModal">
+    <div class="modal-card" style="max-width: 980px; height: 85vh; display: flex; flex-direction: column;">
+      <button class="modal-close">&times;</button>
+      <div id="repoModalBody" style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Interactive Demo Sandbox Modal -->
+  <div class="modal-overlay" id="demoModal">
+    <div class="modal-card" style="max-width: 860px; max-height: 88vh;">
+      <button class="modal-close">&times;</button>
+      <div id="demoModalBody">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
