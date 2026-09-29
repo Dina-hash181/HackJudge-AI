@@ -81,37 +81,123 @@
             judges: (fixtures.users || []).filter(u => u.role === 'judge').length || 4,
             completion_pct: 98
           },
-          event: fixtures.event || { name: 'Sample Hack 2026', is_closed: true }
+          event: {
+            id: fixtures.event?.id || 'evt_01',
+            name: fixtures.event?.name || 'Sample Hack 2026',
+            submissions_close: fixtures.event?.submissions_close || '2026-03-01T18:00:00Z',
+            human_weight: 0.8,
+            ai_weight: 0.2,
+            is_closed: true
+          }
         };
       }
 
       if (url.includes('/api/admin/submissions')) {
-        return { submissions: fixtures.projects || [] };
+        const projs = (fixtures.projects || []).map((p, idx) => ({
+          ...p,
+          review_count: 3,
+          avg_score: (80 + ((idx * 7) % 18)).toFixed(1),
+          eligibility_status: p.eligibility_status || 'approved'
+        }));
+        return { count: projs.length, projects: projs };
       }
 
       if (url.includes('/api/admin/judges')) {
-        return { judges: (fixtures.users || []).filter(u => u.role === 'judge') };
+        const jList = (fixtures.users || []).filter(u => u.role === 'judge').map(j => ({
+          id: j.id,
+          name: j.name || j.full_name || j.username,
+          email: j.email || `${j.username}@hackjudge.ai`,
+          assigned_count: 14,
+          completed_count: 14
+        }));
+        return { count: jList.length, judges: jList };
       }
 
       if (url.includes('/api/admin/calibration')) {
         return {
           calibration: [
-            { judge_id: 'jdg_01', judge_name: 'Dr. Tomas Valenta', evaluations_count: 14, avg_score: 82.4, bias_offset: "+1.2", status: "Calibrated" },
-            { judge_id: 'jdg_02', judge_name: 'Prof. Wei Chen', evaluations_count: 15, avg_score: 79.1, bias_offset: "-2.1", status: "Calibrated" },
-            { judge_id: 'jdg_ai', judge_name: 'Autonomous AI Judge', evaluations_count: 41, avg_score: 81.0, bias_offset: "0.0", status: "Baseline" }
+            { judge_id: 'jdg_01', judge_name: 'Dr. Tomas Valenta', review_count: 14, mean_score: 82.4, std_dev: 4.2, bias: 'Consistent' },
+            { judge_id: 'jdg_02', judge_name: 'Prof. Wei Chen', review_count: 15, mean_score: 79.1, std_dev: 5.1, bias: 'Strict' },
+            { judge_id: 'jdg_03', judge_name: 'Elena Rostova', review_count: 12, mean_score: 85.0, std_dev: 3.8, bias: 'Lenient' },
+            { judge_id: 'jdg_ai', judge_name: 'Autonomous AI Judge', review_count: 41, mean_score: 81.0, std_dev: 4.0, bias: 'Baseline' }
           ]
+        };
+      }
+
+      if (url.includes('/api/admin/assignments/auto')) {
+        return { status: 'success', message: 'Assigned 3 judges per project across all 41 submissions.' };
+      }
+
+      if (url.includes('/api/admin/event/settings')) {
+        return { status: 'success', message: 'Event settings updated successfully.' };
+      }
+
+      if (url.includes('/api/ai/weights')) {
+        return { status: 'success', message: 'Scoring formula weights updated.' };
+      }
+
+      if (url.includes('/api/ai/overview')) {
+        return {
+          ai_evaluated_count: (fixtures.projects || []).length || 41,
+          human_evaluated_count: (fixtures.projects || []).length || 41,
+          total_projects: (fixtures.projects || []).length || 41,
+          avg_ai_score: 81.4,
+          avg_human_score: 82.6,
+          divergent_count: 2
+        };
+      }
+
+      if (url.includes('/api/ai/evaluations')) {
+        const evals = (fixtures.projects || []).slice(0, 15).map((p, idx) => {
+          const aiS = 78.0 + ((idx * 5) % 19);
+          const hS = aiS + (((idx % 3) - 1) * 3);
+          return {
+            ...p,
+            project_id: p.id,
+            project_title: p.title,
+            ai_score: aiS,
+            human_score: hS,
+            score_diff: aiS - hS,
+            is_divergent: Math.abs(aiS - hS) > 5,
+            has_ai_eval: true
+          };
+        });
+        return { evaluations: evals };
+      }
+
+      if (url.includes('/api/ai/batch-evaluate')) {
+        return { status: 'success', message: 'AI evaluation successfully completed for 41 projects.', count: 41 };
+      }
+
+      if (url.includes('/api/participant/team')) {
+        return {
+          has_team: true,
+          team: {
+            id: 'tm_nightshift',
+            name: 'Team Nightshift',
+            invite_code: 'INV-NIGHTSHIFT-01',
+            role: 'leader',
+            members: [
+              { name: 'Ada Lovelace', role: 'leader' },
+              { name: 'Charles Babbage', role: 'member' }
+            ]
+          }
         };
       }
 
       if (url.includes('/api/judge/scores') || url.includes('/api/judge/assigned')) {
         return {
-          projects: (fixtures.projects || []).slice(0, 10),
+          projects: (fixtures.projects || []).slice(0, 10).map((p, i) => ({
+            ...p,
+            project_id: p.id,
+            my_score: i < 7 ? (80 + i) : null
+          })),
           criteria: fixtures.scoring_criteria || []
         };
       }
 
       if (url.includes('/api/auth/switch-demo')) {
-        let target = 'participant';
+        let target = 'organizer';
         try {
           if (options.body) {
             const body = JSON.parse(options.body);
@@ -124,12 +210,12 @@
           judge_b: { id: 'usr_judge_b', username: 'judge_b', full_name: 'Prof. Wei Chen', role: 'judge' },
           participant: { id: 'usr_participant', username: 'participant', full_name: 'Ada Lovelace', role: 'participant' }
         };
-        const user = demoUsers[target] || demoUsers.participant;
+        const user = demoUsers[target] || demoUsers.organizer;
         return { status: 'success', user };
       }
 
       if (url.includes('/api/auth/me')) {
-        return state.user || null;
+        return state.user || { id: 'usr_organizer', username: 'organizer', full_name: 'Organizer (Admin)', role: 'admin' };
       }
     } catch (e) {
       console.warn('Fallback error:', e);
