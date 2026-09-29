@@ -1,0 +1,27 @@
+[build]
+  publish = "public"
+
+# Proxy API requests to backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://budget-dean-tickets-barnes.trycloudflare.com/api/:splat"
+  status = 200
+  force = false
+
+# Support single-page application routing and /projects route
+[[redirects]]
+  from = "/projects"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
